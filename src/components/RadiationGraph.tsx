@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { generateDataset, wienDisplacementLaw } from './PhysicsCalculations';
@@ -39,7 +38,6 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
   const graphRef = useRef<HTMLDivElement>(null);
   const prevTempRef = useRef<number>(temperature);
 
-  // Create formatted dataset for the chart
   const dataset = React.useMemo(() => {
     const { wavelengths, planck, wien, rayleighJeans } = generateDataset(temperature);
     
@@ -51,25 +49,25 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
     }));
   }, [temperature]);
 
-  // Calculate the peak wavelength
   const peakWavelength = wienDisplacementLaw(temperature);
 
-  // Find nearest data point to peak wavelength
   const nearestPeakPoint = dataset.reduce((prev, curr) => 
     Math.abs(curr.wavelength - peakWavelength) < Math.abs(prev.wavelength - peakWavelength) ? curr : prev
   );
 
-  // Add animation effect when temperature changes
   useEffect(() => {
     if (Math.abs(temperature - prevTempRef.current) > 50) {
       const graph = graphRef.current;
       if (graph) {
-        graph.classList.add('opacity-70');
+        graph.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+        graph.style.transform = 'scale(0.98)';
+        graph.style.opacity = '0.7';
         
         setTimeout(() => {
-          graph.classList.remove('opacity-70');
+          graph.style.transform = 'scale(1)';
+          graph.style.opacity = '1';
           prevTempRef.current = temperature;
-        }, 300);
+        }, 50);
       }
     }
   }, [temperature]);
@@ -92,7 +90,7 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
   };
 
   return (
-    <Card className="w-full p-4 transition-opacity duration-300" ref={graphRef}>
+    <Card className="w-full p-4 transition-all duration-300" ref={graphRef}>
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">Spectral Radiance</h2>
@@ -135,7 +133,6 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
               <Tooltip content={<CustomTooltip />} />
               <Legend />
               
-              {/* Wien's displacement law - vertical line at peak wavelength */}
               <ReferenceLine 
                 x={peakWavelength} 
                 stroke="#FFCC00" 
@@ -147,7 +144,6 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 }} 
               />
               
-              {/* Peak highlight */}
               <ReferenceArea 
                 x1={peakWavelength * 0.8} 
                 x2={peakWavelength * 1.2} 
@@ -155,7 +151,6 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 fill="#FFCC00" 
               />
               
-              {/* The three radiation laws */}
               <Line 
                 type="monotone" 
                 dataKey="planck" 
@@ -164,7 +159,9 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 dot={false} 
                 name="Planck" 
                 activeDot={{ r: 6 }}
-                animationDuration={500}
+                animationDuration={800}
+                animationBegin={0}
+                animationEasing="ease-out-cubic"
               />
               <Line 
                 type="monotone" 
@@ -174,7 +171,9 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 dot={false} 
                 name="Wien"
                 strokeDasharray="5 5" 
-                animationDuration={500} 
+                animationDuration={800}
+                animationBegin={100}
+                animationEasing="ease-out-cubic"
               />
               <Line 
                 type="monotone" 
@@ -184,7 +183,9 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 dot={false} 
                 name="Rayleigh-Jeans"
                 strokeDasharray="3 3" 
-                animationDuration={500} 
+                animationDuration={800}
+                animationBegin={200}
+                animationEasing="ease-out-cubic"
               />
             </LineChart>
           </ResponsiveContainer>
