@@ -164,9 +164,9 @@ export const calculateMaxIntensity = (minTemp: number, maxTemp: number): number 
  * @returns Arrays of wavelengths and intensities
  */
 export const generateDataset = (temperature: number, points = 500) => {
-  // Fixed wavelength range from 100nm to 3000nm
-  const minWavelength = 100;
-  const maxWavelength = 3000;
+  // Extended wavelength range from 50nm to 5000nm
+  const minWavelength = 50;
+  const maxWavelength = 5000;
   
   const wavelengths: number[] = [];
   const planckValues: number[] = [];
@@ -190,7 +190,7 @@ export const generateDataset = (temperature: number, points = 500) => {
   
   const normalizedPlanck = planckValues.map(value => value / maxPlanck);
   const normalizedWien = wienValues.map(value => value / maxPlanck);
-  const normalizedRayleigh = rayleighJeansValues.map(value => Math.min(value / maxPlanck, 5));
+  const normalizedRayleigh = rayleighJeansValues.map(value => Math.min(value / maxPlanck, 10));
   
   return {
     wavelengths,

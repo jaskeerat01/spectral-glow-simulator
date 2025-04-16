@@ -121,13 +121,13 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 dataKey="wavelength" 
                 type="number" 
                 scale="log"
-                domain={[100, 3000]}
+                domain={[50, 5000]}
                 tickFormatter={formatWavelength}
                 label={{ value: 'Wavelength (nm)', position: 'insideBottom', offset: -10 }}
               />
               <YAxis 
                 tickFormatter={formatIntensity}
-                domain={[0, 1]}
+                domain={[0, 1.5]}
                 label={{ value: 'Relative Spectral Radiance', angle: -90, position: 'insideLeft' }}
               />
               <Tooltip content={<CustomTooltip />} />
