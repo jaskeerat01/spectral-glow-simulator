@@ -164,16 +164,16 @@ export const calculateMaxIntensity = (minTemp: number, maxTemp: number): number 
  * @returns Arrays of wavelengths and intensities
  */
 export const generateDataset = (temperature: number, points = 500) => {
-  // Extended wavelength range from 50nm to 5000nm
+  // Extended wavelength range from 50nm to 30 micrometers (30,000nm)
   const minWavelength = 50;
-  const maxWavelength = 5000;
+  const maxWavelength = 30000;
   
   const wavelengths: number[] = [];
   const planckValues: number[] = [];
   const wienValues: number[] = [];
   const rayleighJeansValues: number[] = [];
   
-  // Generate data points with fixed range
+  // Generate data points with logarithmic spacing
   for (let i = 0; i < points; i++) {
     // Use logarithmic spacing for better visualization
     const t = i / (points - 1);

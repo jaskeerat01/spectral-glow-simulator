@@ -29,7 +29,10 @@ const formatWavelength = (value: number) => {
   if (value < 1000) {
     return `${Math.round(value)} nm`;
   }
-  return `${(value / 1000).toFixed(1)} μm`;
+  if (value < 30000) {
+    return `${(value / 1000).toFixed(1)} μm`;
+  }
+  return `${(value / 30000).toFixed(1)} mm`;
 };
 
 const formatIntensity = (value: number) => value.toFixed(2);
@@ -121,9 +124,9 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 dataKey="wavelength" 
                 type="number" 
                 scale="log"
-                domain={[50, 5000]}
+                domain={[50, 30000]}
                 tickFormatter={formatWavelength}
-                label={{ value: 'Wavelength (nm)', position: 'insideBottom', offset: -10 }}
+                label={{ value: 'Wavelength', position: 'insideBottom', offset: -10 }}
               />
               <YAxis 
                 tickFormatter={formatIntensity}
