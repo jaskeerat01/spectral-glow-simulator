@@ -1,4 +1,3 @@
-
 // Constants
 export const SPEED_OF_LIGHT = 299792458; // m/s
 export const PLANCK_CONSTANT = 6.62607015e-34; // J⋅s
@@ -139,23 +138,42 @@ export const temperatureToColor = (temperature: number): string => {
 };
 
 /**
+ * Calculate maximum intensity across temperature range
+ * @param minTemp - Minimum temperature in Kelvin
+ * @param maxTemp - Maximum temperature in Kelvin
+ * @returns Maximum intensity
+ */
+export const calculateMaxIntensity = (minTemp: number, maxTemp: number): number => {
+  const tempSteps = 10; // Number of temperature points to check
+  let maxIntensity = 0;
+  
+  for (let i = 0; i < tempSteps; i++) {
+    const temp = minTemp + (i * (maxTemp - minTemp) / (tempSteps - 1));
+    const { planck } = generateDataset(temp);
+    const maxAtTemp = Math.max(...planck);
+    maxIntensity = Math.max(maxIntensity, maxAtTemp);
+  }
+  
+  return maxIntensity * 1.1; // Add 10% margin
+};
+
+/**
  * Generate dataset for plotting
  * @param temperature - Temperature in Kelvin
  * @param points - Number of data points
  * @returns Arrays of wavelengths and intensities
  */
 export const generateDataset = (temperature: number, points = 500) => {
-  // Determine the wavelength range based on temperature
-  const peakWavelength = wienDisplacementLaw(temperature);
-  const minWavelength = peakWavelength * 0.1;
-  const maxWavelength = peakWavelength * 10;
+  // Fixed wavelength range from 100nm to 3000nm
+  const minWavelength = 100;
+  const maxWavelength = 3000;
   
   const wavelengths: number[] = [];
   const planckValues: number[] = [];
   const wienValues: number[] = [];
   const rayleighJeansValues: number[] = [];
   
-  // Generate data points
+  // Generate data points with fixed range
   for (let i = 0; i < points; i++) {
     // Use logarithmic spacing for better visualization
     const t = i / (points - 1);
@@ -167,18 +185,18 @@ export const generateDataset = (temperature: number, points = 500) => {
     rayleighJeansValues.push(rayleighJeansLaw(wavelength, temperature));
   }
   
-  // Normalize values for better visualization
+  // Get the global maximum intensity for normalization
   const maxPlanck = Math.max(...planckValues);
   
   const normalizedPlanck = planckValues.map(value => value / maxPlanck);
   const normalizedWien = wienValues.map(value => value / maxPlanck);
-  const normalizedRayleigh = rayleighJeansValues.map(value => Math.min(value / maxPlanck, 5)); // Cap Rayleigh-Jeans to avoid extreme values
+  const normalizedRayleigh = rayleighJeansValues.map(value => Math.min(value / maxPlanck, 5));
   
   return {
     wavelengths,
     planck: normalizedPlanck,
     wien: normalizedWien,
     rayleighJeans: normalizedRayleigh,
-    peakWavelength
+    peakWavelength: wienDisplacementLaw(temperature)
   };
 };

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { generateDataset, wienDisplacementLaw } from './PhysicsCalculations';
@@ -121,14 +120,14 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
               <XAxis 
                 dataKey="wavelength" 
                 type="number" 
-                scale="log" 
-                domain={['auto', 'auto']}
+                scale="log"
+                domain={[100, 3000]}
                 tickFormatter={formatWavelength}
                 label={{ value: 'Wavelength (nm)', position: 'insideBottom', offset: -10 }}
               />
               <YAxis 
                 tickFormatter={formatIntensity}
-                domain={[0, 1.1]}
+                domain={[0, 1]}
                 label={{ value: 'Relative Spectral Radiance', angle: -90, position: 'insideLeft' }}
               />
               <Tooltip content={<CustomTooltip />} />
