@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for the simulator
+				planck: "#8B5CF6",     // Purple
+				wien: "#F97316",       // Orange
+				rayleigh: "#0EA5E9",   // Cyan
+				temp: {
+					low: "#FF4E50",     // Red
+					medium: "#F9D423",   // Yellow
+					high: "#0099F7",     // Blue
 				}
 			},
 			borderRadius: {
@@ -84,11 +94,33 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'glow': {
+					'0%, 100%': { 
+						opacity: '1',
+						filter: 'brightness(1)'
+					},
+					'50%': { 
+						opacity: '0.9',
+						filter: 'brightness(1.2)'
+					}
+				},
+				'fadeIn': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'glow': 'glow 2s ease-in-out infinite',
+				'fadeIn': 'fadeIn 0.5s ease-out forwards'
 			}
 		}
 	},
