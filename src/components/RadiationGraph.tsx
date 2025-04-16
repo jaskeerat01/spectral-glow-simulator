@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Card } from "@/components/ui/card";
 import { generateDataset, wienDisplacementLaw } from './PhysicsCalculations';
@@ -161,7 +162,7 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 activeDot={{ r: 6 }}
                 animationDuration={800}
                 animationBegin={0}
-                animationEasing="ease-out-cubic"
+                animationEasing="ease"
               />
               <Line 
                 type="monotone" 
@@ -173,7 +174,7 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 strokeDasharray="5 5" 
                 animationDuration={800}
                 animationBegin={100}
-                animationEasing="ease-out-cubic"
+                animationEasing="ease"
               />
               <Line 
                 type="monotone" 
@@ -185,7 +186,7 @@ const RadiationGraph: React.FC<RadiationGraphProps> = ({ temperature }) => {
                 strokeDasharray="3 3" 
                 animationDuration={800}
                 animationBegin={200}
-                animationEasing="ease-out-cubic"
+                animationEasing="ease"
               />
             </LineChart>
           </ResponsiveContainer>
